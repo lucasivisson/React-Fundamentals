@@ -1,10 +1,24 @@
 import { ThumbsUp, Trash } from 'phosphor-react';
+import { useState } from 'react';
 import { Avatar } from './Avatar';
 import styles from './Comment.module.css';
 
 export function Comment({ content, onDeleteComment }) {
+  const [likeCount, setLikeCount] = useState(0);
+
   function handleDeleteComment() {
     onDeleteComment(content)
+  }
+
+  function handleLikeComment() {
+    /*Entendendo Clousure:
+    Usamos a função para setar o valor no setState, pois dessa forma o react consegue nos dar via
+    parametro o valor mais atualizado daquele state, caso tivessemos que incrementar esse valor     
+    várias vezes seguidas, o react provavelmente iria trazer o valor do state daquele contexto
+    que nao tinha sido atualizado ainda, ou seja, um valor desatualizado. */
+    setLikeCount((state) => {
+      return state + 1;
+    })
   }
 
   return (
@@ -25,9 +39,9 @@ export function Comment({ content, onDeleteComment }) {
           <p>{content}</p>
         </div>
         <footer>
-          <button>
+          <button onClick={handleLikeComment}>
             <ThumbsUp />
-            Aplaudir <span>20</span>
+            Aplaudir <span>{likeCount}</span>
           </button>
         </footer>
       </div>
